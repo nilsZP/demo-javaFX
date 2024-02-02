@@ -54,13 +54,13 @@ public class PersonenScherm {
                 lijst.remove(tableView.getSelectionModel().getSelectedIndex());
             }
         });
-        /*opzoekenKnop.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        opzoekenKnop.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Stage opzoekenStage = maakOpzoekenStage(lijst,tableView);
                 opzoekenStage.show();
             }
-        });*/
+        });
 
 
         HBox personenContainer = new HBox(10);
@@ -149,5 +149,34 @@ public class PersonenScherm {
         detailStage.setScene(new Scene(detailContainer,800,400));
 
         return detailStage;
+    }
+
+    public static Stage maakOpzoekenStage(ObservableList<Persoon> lijst, TableView tableView) {
+        Stage opzoekStage = new Stage();
+        GridPane opzoekContainer = new GridPane();
+        opzoekContainer.setHgap(5);
+        opzoekContainer.setVgap(5);
+        opzoekContainer.setPadding(new Insets(10));
+
+        Label gebruikersnaamLabel = new Label("Gebruikersnaam");
+        opzoekContainer.add(gebruikersnaamLabel,0,0);
+        TextField gebruikersnaamVeld = new TextField();
+        opzoekContainer.add(gebruikersnaamVeld,1,0);
+
+        Button opzoekKnop = new Button("Opzoeken");
+        opzoekContainer.add(opzoekKnop,1,1);
+        opzoekKnop.setOnMouseClicked(mouseEvent -> {
+            for (int i = 0;i < lijst.size();i++) {
+                if (lijst.get(i).getGebruikersnaam().equalsIgnoreCase(gebruikersnaamVeld.getText())) {
+                    tableView.getSelectionModel().select(i);
+                    opzoekStage.close();
+                }
+            }
+        });
+
+        opzoekStage.setTitle("Lid opzoeken");
+        opzoekStage.setScene(new Scene(opzoekContainer,300,80));
+
+        return opzoekStage;
     }
 }
